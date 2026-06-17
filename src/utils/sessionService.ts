@@ -1,4 +1,4 @@
-import { ref, set, get, onValue, runTransaction, off } from "firebase/database";
+import { ref, set, get, update, onValue, runTransaction, off } from "firebase/database";
 import { db, ensureAuth } from "../config/firebase";
 import { Session, Straw, SESSION_TTL_MS, MAX_PLAYERS } from "./types";
 
@@ -14,7 +14,8 @@ export function sanitizeName(raw: string): string {
 }
 
 function sessionRef(code: string) { return ref(db, `sessions/${code}`); }
-function isExpired(s: Session)    { return Date.now() > s.expiresAt; }
+function playerRef(code: string, uid: string) { return ref(db, `sessions/${code}/players/${uid}`); }
+function isExpired(s: Session) { return Date.now() > s.expiresAt; }
 
 export async function createSession(hostName: string): Promise<Session> {
   const uid  = await ensureAuth();
@@ -22,7 +23,7 @@ export async function createSession(hostName: string): Promise<Session> {
   const now  = Date.now();
   const session: Session = {
     code, host: uid, status: "lobby",
-    players:   { [uid]: { id: uid, name: sanitizeName(hostName), joinedAt: now } },
+    players: { [uid]: { id: uid, name: sanitizeName(hostName), joinedAt: now } },
     straws: null, picks: null,
     createdAt: now, expiresAt: now + SESSION_TTL_MS,
   };
@@ -38,27 +39,26 @@ export async function joinSession(
   const uid = await ensureAuth();
   const cleanName = sanitizeName(playerName);
 
-  // Lecture directe pour vérifier que la session existe
+  // Lecture directe de la session
   const snap = await get(sessionRef(code));
   if (!snap.exists()) return { ok: false, error: "NOT_FOUND" };
 
   const current: Session = snap.val();
   if (isExpired(current))         return { ok: false, error: "EXPIRED" };
   if (current.status !== "lobby") return { ok: false, error: "ALREADY_STARTED" };
+  if (current.players?.[uid])     {
+    // Déjà dans la session
+    return { ok: true, session: current };
+  }
   if (Object.keys(current.players ?? {}).length >= MAX_PLAYERS)
                                   return { ok: false, error: "FULL" };
 
-  // Ajout du joueur via transaction atomique
-  await runTransaction(sessionRef(code), (data: Session | null) => {
-    if (!data) return;
-    if (data.players?.[uid]) return data;
-    return {
-      ...data,
-      players: {
-        ...data.players,
-        [uid]: { id: uid, name: cleanName, joinedAt: Date.now() },
-      },
-    };
+  // Ajout direct du joueur dans Firebase avec update()
+  // update() écrit uniquement le nœud du joueur sans écraser le reste
+  await set(playerRef(code, uid), {
+    id: uid,
+    name: cleanName,
+    joinedAt: Date.now(),
   });
 
   const updatedSnap = await get(sessionRef(code));
@@ -70,12 +70,12 @@ export async function startDraw(code: string): Promise<{ ok: true } | { ok: fals
   let result: { ok: true } | { ok: false; error: string };
 
   await runTransaction(sessionRef(code), (current: Session | null) => {
-    if (!current)                    { result = { ok: false, error: "NOT_FOUND" };        return; }
-    if (isExpired(current))          { result = { ok: false, error: "EXPIRED" };          return; }
-    if (current.host !== uid)        { result = { ok: false, error: "NOT_HOST" };         return; }
-    if (current.status !== "lobby")  { result = { ok: false, error: "ALREADY_STARTED" };  return; }
+    if (!current)                   { result = { ok: false, error: "NOT_FOUND" };       return; }
+    if (isExpired(current))         { result = { ok: false, error: "EXPIRED" };         return; }
+    if (current.host !== uid)       { result = { ok: false, error: "NOT_HOST" };        return; }
+    if (current.status !== "lobby") { result = { ok: false, error: "ALREADY_STARTED" }; return; }
     const playerIds = Object.keys(current.players ?? {});
-    if (playerIds.length < 2)        { result = { ok: false, error: "NOT_ENOUGH" };       return; }
+    if (playerIds.length < 2)       { result = { ok: false, error: "NOT_ENOUGH" };      return; }
 
     const shortIdx = Math.floor(Math.random() * playerIds.length);
     const shuffled = [...playerIds].sort(() => Math.random() - 0.5);
@@ -94,12 +94,12 @@ export async function pickStraw(
   let result: { ok: true; revealed: boolean } | { ok: false; error: string };
 
   await runTransaction(sessionRef(code), (current: Session | null) => {
-    if (!current)                        { result = { ok: false, error: "NOT_FOUND" };      return; }
-    if (current.status !== "drawing")    { result = { ok: false, error: "WRONG_STATUS" };   return; }
+    if (!current)                     { result = { ok: false, error: "NOT_FOUND" };      return; }
+    if (current.status !== "drawing") { result = { ok: false, error: "WRONG_STATUS" };   return; }
     const picks = current.picks ?? {};
-    if (picks[uid] !== undefined)        { result = { ok: false, error: "ALREADY_PICKED" }; return; }
+    if (picks[uid] !== undefined)     { result = { ok: false, error: "ALREADY_PICKED" }; return; }
     if (Object.entries(picks).some(([pid, idx]) => idx === strawIndex && pid !== uid))
-                                         { result = { ok: false, error: "STRAW_TAKEN" };    return; }
+                                      { result = { ok: false, error: "STRAW_TAKEN" };    return; }
     const newPicks     = { ...picks, [uid]: strawIndex };
     const totalPlayers = Object.keys(current.players ?? {}).length;
     const allPicked    = Object.keys(newPicks).length === totalPlayers;
