@@ -11,15 +11,15 @@ export function HomePage() {
   const navigate = useNavigate();
   return (
     <Shell>
-      <div style={{ textAlign: "center", marginBottom: 36 }}>
-        <HeroStraws />
+<div style={{ textAlign: "center", marginBottom: 36, display: "flex", flexDirection: "column", alignItems: "center" }}>
+  <HeroStraws />
         <h1 style={{
           fontSize: 42, fontWeight: 900, letterSpacing: ".02em",
           background: "linear-gradient(135deg, var(--gold-light), var(--gold))",
           WebkitBackgroundClip: "text", WebkitTextFillColor: "transparent",
           marginBottom: 10,
         }}>
-          Courte Paille
+          Straw
         </h1>
         <p style={{ color: "var(--muted)", fontSize: 16 }}>Qui tirera la courte paille ?</p>
       </div>
