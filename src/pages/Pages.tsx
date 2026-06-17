@@ -6,7 +6,6 @@ import { useSession, useNetworkStatus } from "../hooks/useSession";
 import { createSession, joinSession, sanitizeName } from "../utils/sessionService";
 import { ensureAuth } from "../config/firebase";
 import { QRCodeSVG } from "qrcode.react";
-import { useNavigate, useParams } from "react-router-dom";
 
 // ─── HOME ──────────────────────────────────────────────────────────────────
 export function HomePage() {
