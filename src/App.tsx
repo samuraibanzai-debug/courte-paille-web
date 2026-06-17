@@ -17,6 +17,7 @@ export default function App() {
         <Route path="/"              element={<HomePage />} />
         <Route path="/create"        element={<CreatePage />} />
         <Route path="/join"          element={<JoinPage />} />
+        <Route path="/join/:code"    element={<JoinPage />} />
         <Route path="/lobby/:code"   element={<LobbyPage />} />
         <Route path="/draw/:code"    element={<DrawPage />} />
         <Route path="/result/:code"  element={<ResultPage />} />

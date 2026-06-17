@@ -5,6 +5,8 @@ import { HeroStraws, ClosedStraw, OpenStraw } from "../components/Straw";
 import { useSession, useNetworkStatus } from "../hooks/useSession";
 import { createSession, joinSession, sanitizeName } from "../utils/sessionService";
 import { ensureAuth } from "../config/firebase";
+import { QRCodeSVG } from "qrcode.react";
+import { useNavigate, useParams } from "react-router-dom";
 
 // ─── HOME ──────────────────────────────────────────────────────────────────
 export function HomePage() {
@@ -81,7 +83,8 @@ export function JoinPage() {
   const navigate     = useNavigate();
   const { isOnline } = useNetworkStatus();
   const [name,    setName]    = useState("");
-  const [code,    setCode]    = useState("");
+  const { code: codeParam } = useParams<{ code?: string }>();
+  const [code, setCode] = useState(codeParam ?? "");
   const [loading, setLoading] = useState(false);
   const [error,   setError]   = useState<string | null>(null);
 
@@ -146,6 +149,27 @@ export function LobbyPage() {
   return (
     <Shell>
       <SessionCode code={code ?? "---"} />
+      <div style={{
+  background: "white",
+  borderRadius: 16,
+  padding: 16,
+  marginBottom: 20,
+  display: "flex",
+  flexDirection: "column",
+  alignItems: "center",
+  gap: 10,
+}}>
+  <QRCodeSVG
+    value={`${window.location.origin}/join/${code}`}
+    size={180}
+    bgColor="#ffffff"
+    fgColor="#0D0B12"
+    level="M"
+  />
+  <div style={{ fontSize: 12, color: "var(--muted)" }}>
+    Scanner pour rejoindre directement
+  </div>
+</div>
       <Card style={{ marginBottom: 16 }}>
         <div style={{ fontSize: 13, color: "var(--muted)", marginBottom: 14 }}>
           Joueurs ({players.length}/12)
