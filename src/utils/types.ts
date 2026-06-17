@@ -1,4 +1,4 @@
-export const SESSION_TTL_MS = 2 * 60 * 60 * 1000;
+export const SESSION_TTL_MS = 15 * 60 * 1000;
 export const MAX_PLAYERS    = 12;
 
 export type SessionStatus = "lobby" | "drawing" | "revealed";
