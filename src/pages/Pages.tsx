@@ -159,7 +159,7 @@ export function LobbyPage() {
   gap: 10,
 }}>
   <QRCodeSVG
-    value={`${window.location.origin}/join/${code}`}
+    value={`https://straw-the-game.vercel.app/join/${code}`}
     size={180}
     bgColor="#ffffff"
     fgColor="#0D0B12"
