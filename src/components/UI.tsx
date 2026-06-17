@@ -55,10 +55,7 @@ export function Btn({
         letterSpacing: ".02em",
         ...(variants[variant].border ? {} : {}),
       }}
-      {...(variants[variant] as any).border
-        ? { style: { ...variants[variant], border: (variants[variant] as any).border, borderRadius: 12, padding: "14px 24px", fontSize: 15, fontWeight: 700, cursor: disabled ? "not-allowed" : "pointer", opacity: disabled ? 0.5 : hover ? 0.88 : 1, transition: "opacity .18s", width: fullWidth ? "100%" : "auto", marginBottom: 10 } }
-        : {}
-      }
+     
     >
       {loading ? "…" : children}
     </button>
