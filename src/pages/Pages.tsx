@@ -28,6 +28,15 @@ export function HomePage() {
         <Btn onClick={() => navigate("/create")}>✨ Créer une session</Btn>
         <Btn onClick={() => navigate("/join")} variant="secondary">🔗 Rejoindre une session</Btn>
       </Card>
+
+<div style={{ marginTop: 24, fontSize: 12, color: "var(--muted)" }}>
+  <span
+    onClick={() => navigate("/legal")}
+    style={{ cursor: "pointer", textDecoration: "underline" }}
+  >
+    Mentions légales & Politique de confidentialité
+  </span>
+</div>
     </Shell>
   );
 }
