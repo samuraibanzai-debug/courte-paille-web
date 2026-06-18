@@ -378,3 +378,147 @@ export function ResultPage() {
     </Shell>
   );
 }
+
+// ─── MENTIONS LÉGALES & POLITIQUE DE CONFIDENTIALITÉ ──────────────────────
+export function LegalPage() {
+  const navigate = useNavigate();
+  return (
+    <Shell>
+      <div style={{ width: "100%", maxWidth: 680, padding: "0 20px" }}>
+        <button
+          onClick={() => navigate("/")}
+          style={{
+            background: "none", border: "none", color: "var(--gold)",
+            cursor: "pointer", fontSize: 14, marginBottom: 24, padding: 0,
+          }}
+        >
+          ← Retour
+        </button>
+
+        <h1 style={{ fontSize: 28, fontWeight: 900, color: "var(--gold)", marginBottom: 8 }}>
+          Mentions légales
+        </h1>
+        <p style={{ color: "var(--muted)", fontSize: 13, marginBottom: 32 }}>
+          Dernière mise à jour : 18 juin 2026
+        </p>
+
+        <Section titre="Éditeur du site">
+          <p>Raison sociale : <strong>[TBD]</strong></p>
+          <p>Forme juridique : <strong>[TBD]</strong></p>
+          <p>SIRET : <strong>[TBD]</strong></p>
+          <p>Adresse : <strong>[TBD]</strong></p>
+          <p>Email : <strong>[TBD]</strong></p>
+        </Section>
+
+        <Section titre="Hébergement">
+          <p>Le site est hébergé par <strong>Vercel Inc.</strong></p>
+          <p>340 Pine Street, Suite 900, San Francisco, CA 94104, États-Unis</p>
+          <p>Site : <a href="https://vercel.com" style={{ color: "var(--gold)" }}>vercel.com</a></p>
+        </Section>
+
+        <Section titre="Base de données">
+          <p>Les données de session sont hébergées par <strong>Google Firebase</strong> (Google LLC)</p>
+          <p>1600 Amphitheatre Parkway, Mountain View, CA 94043, États-Unis</p>
+          <p>Serveurs localisés en <strong>Europe de l'Ouest (Belgique)</strong></p>
+        </Section>
+
+        <hr style={{ border: "none", borderTop: "1px solid var(--border)", margin: "40px 0" }} />
+
+        <h1 style={{ fontSize: 28, fontWeight: 900, color: "var(--gold)", marginBottom: 8 }}>
+          Politique de confidentialité
+        </h1>
+        <p style={{ color: "var(--muted)", fontSize: 13, marginBottom: 32 }}>
+          Conforme au Règlement Général sur la Protection des Données (RGPD)
+        </p>
+
+        <Section titre="Données collectées">
+          <p>Lors de l'utilisation de Straw, les données suivantes sont collectées :</p>
+          <ul style={{ paddingLeft: 20, lineHeight: 2 }}>
+            <li>Le <strong>prénom ou pseudo</strong> saisi volontairement par le joueur</li>
+            <li>Un <strong>identifiant anonyme temporaire</strong> généré automatiquement par Firebase (aucun lien avec votre identité réelle)</li>
+            <li>L'<strong>adresse IP</strong> collectée automatiquement par Vercel et Firebase à des fins techniques</li>
+          </ul>
+          <p style={{ marginTop: 12 }}>
+            Aucune adresse email, aucun mot de passe, aucune donnée de paiement ne sont collectés.
+          </p>
+        </Section>
+
+        <Section titre="Finalité du traitement">
+          <p>Les données collectées sont utilisées uniquement pour :</p>
+          <ul style={{ paddingLeft: 20, lineHeight: 2 }}>
+            <li>Faire fonctionner les sessions de jeu en temps réel</li>
+            <li>Afficher le prénom des participants dans la session</li>
+            <li>Assurer la sécurité et la stabilité du service</li>
+          </ul>
+          <p style={{ marginTop: 12 }}>
+            Aucune donnée n'est utilisée à des fins publicitaires ou commerciales.
+          </p>
+        </Section>
+
+        <Section titre="Durée de conservation">
+          <p>
+            Les sessions et toutes les données associées (prénoms, identifiants) sont
+            <strong> automatiquement supprimées après 15 minutes</strong> d'inactivité.
+            Aucune donnée n'est conservée au-delà de cette durée.
+          </p>
+        </Section>
+
+        <Section titre="Cookies">
+          <p>
+            Le site utilise uniquement des <strong>cookies techniques strictement nécessaires</strong>
+            au fonctionnement du service (authentification anonyme Firebase).
+            Ces cookies ne permettent pas de vous identifier personnellement et ne
+            nécessitent pas de consentement selon la réglementation en vigueur.
+          </p>
+          <p style={{ marginTop: 12 }}>
+            Aucun cookie publicitaire ou de tracking n'est utilisé.
+          </p>
+        </Section>
+
+        <Section titre="Partage des données">
+          <p>Les données transitent par les services tiers suivants :</p>
+          <ul style={{ paddingLeft: 20, lineHeight: 2 }}>
+            <li><strong>Google Firebase</strong> — base de données temps réel (serveurs en Belgique)</li>
+            <li><strong>Vercel</strong> — hébergement du site (serveurs en Europe)</li>
+          </ul>
+          <p style={{ marginTop: 12 }}>
+            Ces prestataires sont soumis à leurs propres politiques de confidentialité
+            et sont conformes au RGPD.
+          </p>
+        </Section>
+
+        <Section titre="Vos droits">
+          <p>Conformément au RGPD, vous disposez des droits suivants :</p>
+          <ul style={{ paddingLeft: 20, lineHeight: 2 }}>
+            <li><strong>Droit d'accès</strong> — connaître les données vous concernant</li>
+            <li><strong>Droit de suppression</strong> — vos données sont supprimées automatiquement après 15 minutes</li>
+            <li><strong>Droit d'opposition</strong> — ne pas utiliser le service</li>
+          </ul>
+          <p style={{ marginTop: 12 }}>
+            Pour toute question, contactez-nous à : <strong>[TBD]</strong>
+          </p>
+        </Section>
+
+        <Section titre="Responsable du traitement">
+          <p><strong>[TBD]</strong></p>
+          <p>[TBD]</p>
+         <p>Email : <strong>[TBD]</strong></p>
+        </Section>
+      </div>
+    </Shell>
+  );
+}
+
+// Composant helper pour les sections
+function Section({ titre, children }: { titre: string; children: React.ReactNode }) {
+  return (
+    <div style={{ marginBottom: 32 }}>
+      <h2 style={{ fontSize: 18, fontWeight: 700, color: "var(--gold-light)", marginBottom: 12 }}>
+        {titre}
+      </h2>
+      <div style={{ color: "var(--text)", fontSize: 15, lineHeight: 1.7 }}>
+        {children}
+      </div>
+    </div>
+  );
+}

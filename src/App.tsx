@@ -7,6 +7,7 @@ import {
   LobbyPage, DrawPage, ResultPage,
 } from "./pages/Pages";
 import "./index.css";
+import { ..., LegalPage } from "./pages/Pages";
 
 export default function App() {
   const { isOnline } = useNetworkStatus();
@@ -22,6 +23,7 @@ export default function App() {
         <Route path="/draw/:code"    element={<DrawPage />} />
         <Route path="/result/:code"  element={<ResultPage />} />
         <Route path="*"              element={<Navigate to="/" />} />
+        <Route path="/legal" element={<LegalPage />} />
       </Routes>
     </BrowserRouter>
   );
