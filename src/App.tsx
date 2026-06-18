@@ -7,7 +7,7 @@ import {
   LobbyPage, DrawPage, ResultPage,
 } from "./pages/Pages";
 import "./index.css";
-import { ..., LegalPage } from "./pages/Pages";
+import { LegalPage } from "./pages/Pages";
 
 export default function App() {
   const { isOnline } = useNetworkStatus();
