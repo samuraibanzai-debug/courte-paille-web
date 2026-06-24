@@ -12,27 +12,32 @@ export function HomePage() {
   const navigate = useNavigate();
   return (
     <Shell>
-<div style={{ textAlign: "center", marginBottom: 36, display: "flex", flexDirection: "column", alignItems: "center" }}>
+<div style={{ textAlign: "center", marginBottom: 32, display: "flex", flexDirection: "column", alignItems: "center" }}>
   <HeroStraws />
         <h1 style={{
-          fontSize: 42, fontWeight: 900, letterSpacing: ".02em",
-          background: "linear-gradient(135deg, var(--gold-light), var(--gold))",
+          fontSize: 48, fontWeight: 900, letterSpacing: ".04em",
+          background: "linear-gradient(135deg, var(--gold-light) 0%, var(--gold) 60%, var(--gold-dark) 100%)",
           WebkitBackgroundClip: "text", WebkitTextFillColor: "transparent",
-          marginBottom: 10,
+          backgroundClip: "text",
+          marginBottom: 8,
         }}>
           Straw
         </h1>
-        <p style={{ color: "var(--muted)", fontSize: 16 }}>Qui tirera la courte paille ?</p>
+        <p style={{ color: "var(--muted)", fontSize: 15, letterSpacing: ".01em" }}>
+          Qui tirera la courte paille ?
+        </p>
       </div>
       <Card>
         <Btn onClick={() => navigate("/create")}>✨ Créer une session</Btn>
         <Btn onClick={() => navigate("/join")} variant="secondary">🔗 Rejoindre une session</Btn>
       </Card>
 
-<div style={{ marginTop: 24, fontSize: 12, color: "var(--muted)" }}>
+<div style={{ marginTop: 28, fontSize: 12, color: "var(--muted)" }}>
   <span
     onClick={() => navigate("/legal")}
-    style={{ cursor: "pointer", textDecoration: "underline" }}
+    style={{ cursor: "pointer", textDecoration: "underline", opacity: 0.7, transition: "opacity .2s" }}
+    onMouseEnter={e => (e.currentTarget.style.opacity = "1")}
+    onMouseLeave={e => (e.currentTarget.style.opacity = "0.7")}
   >
     Mentions légales & Politique de confidentialité
   </span>
@@ -158,23 +163,28 @@ export function LobbyPage() {
     <Shell>
       <SessionCode code={code ?? "---"} />
       <div style={{
-  background: "white",
-  borderRadius: 16,
-  padding: 16,
-  marginBottom: 20,
   display: "flex",
   flexDirection: "column",
   alignItems: "center",
-  gap: 10,
+  gap: 12,
+  marginBottom: 20,
 }}>
-  <QRCodeSVG
-    value={`https://straw-draw.vercel.app/join/${code}`}
-    size={180}
-    bgColor="#ffffff"
-    fgColor="#0D0B12"
-    level="M"
-  />
-  <div style={{ fontSize: 12, color: "var(--muted)" }}>
+  <div style={{
+    background: "#ffffff",
+    borderRadius: 16,
+    padding: 14,
+    border: "2px solid rgba(212, 168, 67, 0.25)",
+    boxShadow: "0 4px 24px rgba(0,0,0,0.4), 0 0 0 1px rgba(212,168,67,0.1)",
+  }}>
+    <QRCodeSVG
+      value={`https://straw-draw.vercel.app/join/${code}`}
+      size={172}
+      bgColor="#ffffff"
+      fgColor="#0D0B12"
+      level="M"
+    />
+  </div>
+  <div style={{ fontSize: 12, color: "var(--muted)", letterSpacing: ".01em" }}>
     Scanner pour rejoindre directement
   </div>
 </div>

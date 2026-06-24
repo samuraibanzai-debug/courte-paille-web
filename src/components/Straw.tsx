@@ -97,17 +97,25 @@ export function ClosedStraw({
 // ─── Hero straws (home screen) ─────────────────────────────────────────────
 export function HeroStraws() {
   const heights = [130, 95, 140, 105, 120, 90, 135];
+  const shortIdx = 5; // index of the short straw
   return (
-    <div style={{ display: "flex", alignItems: "flex-end", gap: 10, marginBottom: 28 }}>
-      {heights.map((h, i) => (
-        <div key={i} style={{
-          width: 14, height: h, borderRadius: 7,
-          background: `linear-gradient(to bottom, var(--straw-light), var(--straw))`,
-          boxShadow: "0 4px 16px #D4A84333",
-          animation: `floatUp ${1.1 + i * .15}s ease-in-out ${i * .13}s infinite alternate`,
-          "--r": `${(i - 3) * 2}deg`,
-        } as React.CSSProperties} />
-      ))}
+    <div style={{ display: "flex", alignItems: "flex-end", gap: 11, marginBottom: 32 }}>
+      {heights.map((h, i) => {
+        const isShort = i === shortIdx;
+        return (
+          <div key={i} style={{
+            width: 15, height: h, borderRadius: 8,
+            background: isShort
+              ? `linear-gradient(to bottom, ${C.strawShortLight}, ${C.strawShort})`
+              : `linear-gradient(to bottom, var(--straw-light), var(--straw))`,
+            boxShadow: isShort
+              ? `0 4px 20px ${C.strawShort}55`
+              : "0 4px 20px #D4A84340",
+            animation: `floatUp ${1.1 + i * .15}s ease-in-out ${i * .13}s infinite alternate`,
+            "--r": `${(i - 3) * 2.5}deg`,
+          } as React.CSSProperties} />
+        );
+      })}
     </div>
   );
 }
